@@ -102,49 +102,59 @@ public class City {
 				{
 					people[x][y].update();
 
-					if(y>0)
+					if(y>0 && people[x][y]!=null)
 					{
-						if(people[x][y].getDirection() == 0 && !walls[x][y - 1] && people[x][y-1]==null)
+						if(people[x][y].getDirection() == 0 && !walls[x][y - 1] && people[x][y-1]==null && people[x][y].getMoved()!=true)
 						{
 							//people2[x][y-1] = new person(people[x][y].getDirection());
 							people[x][y-1] = new person(people[x][y].getDirection());
+							people[x][y-1].setMoved(true);
 							people[x][y] = null;
-							break;
+							//break;
 						}
 					}
-					if(y<height-1)
+					if(y<height-1 && people[x][y]!=null)
 					{
-						if(people[x][y].getDirection() == 2 && !walls[x][y + 1] && people[x][y+1]==null)
+						if(people[x][y].getDirection() == 2 && !walls[x][y + 1] && people[x][y+1]==null && people[x][y].getMoved()!=true)
 						{
 							//people2[x][y+1] = new person(people[x][y].getDirection());
 							people[x][y+1] = new person(people[x][y].getDirection());
+                            people[x][y+1].setMoved(true);
 							people[x][y] = null;
-							break;
+							//break;
 						}
 					}
-					if(x<width-1)
+					if(x<width-1 && people[x][y]!=null)
 					{
-						if(people[x][y].getDirection() == 1 && !walls[x+1][y] && people[x+1][y]==null)
+						if(people[x][y].getDirection() == 1 && !walls[x+1][y] && people[x+1][y]==null && people[x][y].getMoved()!=true)
 						{
 							//people2[x+1][y] = new person(people[x][y].getDirection());
 							people[x+1][y] = new person(people[x][y].getDirection());
+                            people[x+1][y].setMoved(true);
 							people[x][y] = null;
-							break;
+							//break;
 						}
 					}
-					if(x>0)
+					if(x>0 && people[x][y]!=null)
 					{
-						if(people[x][y].getDirection() == 3 && !walls[x-1][y] && people[x-1][y]==null)
+						if(people[x][y].getDirection() == 3 && !walls[x-1][y] && people[x-1][y]==null && people[x][y].getMoved()!=true)
 						{
 							//people2[x-1][y] = new person(people[x][y].getDirection());
 							people[x-1][y] = new person(people[x][y].getDirection());
+                            people[x-1][y].setMoved(true);
 							people[x][y] = null;
-							break;
+							//break;
 						}
 					}
 				}
 			}
 		}
+        for(int y=0; y<height; y++) {
+            for (int x = 0; x < width; x++) {
+                if(people[x][y]!=null)
+                    people[x][y].setMoved(false);
+            }
+        }
 		//people = people2;
 	}
 

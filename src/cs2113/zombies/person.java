@@ -4,7 +4,8 @@ import cs2113.util.Helper;
 
 public class person
 {
-    private int direction;
+    private int direction=0;
+    private boolean moved = false;
 
     public person(int d)
     {
@@ -15,7 +16,14 @@ public class person
     {
         return direction;
     }
-
+    public boolean getMoved()
+    {
+        return moved;
+    }
+    public void setMoved(boolean a)
+    {
+        moved = a;
+    }
     public void update()
     {
         int ud = Helper.nextInt(10);
