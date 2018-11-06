@@ -48,13 +48,22 @@ public class City {
 		{
 			tx = Helper.nextInt(width);
 			ty = Helper.nextInt(height);
-			while(walls[tx][ty] == true)
+			while(walls[tx][ty] == true || people[tx][ty]!=null)
 			{
 				tx = Helper.nextInt(width);
 				ty = Helper.nextInt(height);
 			}
 			people[tx][ty] = new person(Helper.nextInt(4));
 		}
+
+		tx = Helper.nextInt(width);
+		ty = Helper.nextInt(height);
+		while (walls[tx][ty] == true || people[tx][ty]!=null)
+		{
+			tx = Helper.nextInt(width);
+			ty = Helper.nextInt(height);
+		}
+		people[tx][ty] = new zombie(Helper.nextInt(4));
 	}
 
 
@@ -93,7 +102,7 @@ public class City {
 	 */
 	public void update() {
 		// Move humans, zombies, etc
-		person[][] people2 = new person[width][height];
+		//person[][] people2 = new person[width][height];
 		for(int y=0; y<height; y++)
 		{
 			for(int x=0; x<width; x++)
@@ -107,7 +116,14 @@ public class City {
 						if(people[x][y].getDirection() == 0 && !walls[x][y - 1] && people[x][y-1]==null && people[x][y].getMoved()!=true)
 						{
 							//people2[x][y-1] = new person(people[x][y].getDirection());
-							people[x][y-1] = new person(people[x][y].getDirection());
+							if(people[x][y].getInfected())
+							{
+								people[x][y - 1] = new zombie(people[x][y].getDirection());
+							}
+							else
+							{
+								people[x][y - 1] = new person(people[x][y].getDirection());
+							}
 							people[x][y-1].setMoved(true);
 							people[x][y] = null;
 							//break;
@@ -118,7 +134,14 @@ public class City {
 						if(people[x][y].getDirection() == 2 && !walls[x][y + 1] && people[x][y+1]==null && people[x][y].getMoved()!=true)
 						{
 							//people2[x][y+1] = new person(people[x][y].getDirection());
-							people[x][y+1] = new person(people[x][y].getDirection());
+							if(people[x][y].getInfected())
+							{
+								people[x][y + 1] = new zombie(people[x][y].getDirection());
+							}
+							else
+							{
+								people[x][y + 1] = new person(people[x][y].getDirection());
+							}
                             people[x][y+1].setMoved(true);
 							people[x][y] = null;
 							//break;
@@ -129,7 +152,14 @@ public class City {
 						if(people[x][y].getDirection() == 1 && !walls[x+1][y] && people[x+1][y]==null && people[x][y].getMoved()!=true)
 						{
 							//people2[x+1][y] = new person(people[x][y].getDirection());
-							people[x+1][y] = new person(people[x][y].getDirection());
+							if(people[x][y].getInfected())
+							{
+								people[x+1][y] = new zombie(people[x][y].getDirection());
+							}
+							else
+							{
+								people[x + 1][y] = new person(people[x][y].getDirection());
+							}
                             people[x+1][y].setMoved(true);
 							people[x][y] = null;
 							//break;
@@ -140,7 +170,14 @@ public class City {
 						if(people[x][y].getDirection() == 3 && !walls[x-1][y] && people[x-1][y]==null && people[x][y].getMoved()!=true)
 						{
 							//people2[x-1][y] = new person(people[x][y].getDirection());
-							people[x-1][y] = new person(people[x][y].getDirection());
+							if(people[x][y].getInfected())
+							{
+								people[x-1][y] = new zombie(people[x][y].getDirection());
+							}
+							else
+							{
+								people[x - 1][y] = new person(people[x][y].getDirection());
+							}
                             people[x-1][y].setMoved(true);
 							people[x][y] = null;
 							//break;
@@ -177,7 +214,13 @@ private void drawPeople()
 		{
 			if(people[c][r]!=null)
 			{
+				ZombieSim.dp.setPenColor(Color.WHITE);
 				ZombieSim.dp.drawDot(c, r);
+				if(people[c][r].getInfected())
+				{
+					ZombieSim.dp.setPenColor(Color.GREEN);
+					ZombieSim.dp.drawDot(c, r);
+				}
 			}
 		}
 	}
