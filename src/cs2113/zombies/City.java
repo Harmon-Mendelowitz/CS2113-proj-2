@@ -13,6 +13,7 @@ public class City {
 	 *  have a wall.
 	 */
 	private boolean walls[][];
+	private person people[][];
 	private int width, height;
 
 	/**
@@ -26,6 +27,7 @@ public class City {
 		width = w;
 		height = h;
 		walls = new boolean[w][h];
+		people = new person[w][h];
 
 		randomBuildings(numB);
 		populate(numP);
@@ -40,7 +42,19 @@ public class City {
 	 */
 	private void populate(int numPeople)
 	{
+		int tx,ty;
 		// Generate numPeople new humans randomly placed around the city.
+		for(int x=0; x<numPeople; x++)
+		{
+			tx = Helper.nextInt(width);
+			ty = Helper.nextInt(height);
+			while(walls[tx][ty] == true)
+			{
+				tx = Helper.nextInt(width);
+				ty = Helper.nextInt(height);
+			}
+			people[tx][ty] = new person(Helper.nextInt(4));
+		}
 	}
 
 
@@ -51,26 +65,26 @@ public class City {
 	 */
 	private void randomBuildings(int numB) {
 		/* Create buildings of a reasonable size for this map */
-		int bldgMaxSize = width/6;
-		int bldgMinSize = width/50;
+			int bldgMaxSize = width/6;
+			int bldgMinSize = width/50;
 
-		/* Produce a bunch of random rectangles and fill in the walls array */
-		for(int i=0; i < numB; i++) {
-			int tx, ty, tw, th;
-			tx = Helper.nextInt(width);
-			ty = Helper.nextInt(height);
-			tw = Helper.nextInt(bldgMaxSize) + bldgMinSize;
-			th = Helper.nextInt(bldgMaxSize) + bldgMinSize;
+			/* Produce a bunch of random rectangles and fill in the walls array */
+			for(int i=0; i < numB; i++) {
+				int tx, ty, tw, th;
+				tx = Helper.nextInt(width);
+				ty = Helper.nextInt(height);
+				tw = Helper.nextInt(bldgMaxSize) + bldgMinSize;
+				th = Helper.nextInt(bldgMaxSize) + bldgMinSize;
 
-			for(int r = ty; r < ty + th; r++) {
-				if(r >= height)
-					continue;
-				for(int c = tx; c < tx + tw; c++) {
-					if(c >= width)
-						break;
-					walls[c][r] = true;
+				for(int r = ty; r < ty + th; r++) {
+					if(r >= height)
+						continue;
+					for(int c = tx; c < tx + tw; c++) {
+						if(c >= width)
+							break;
+						walls[c][r] = true;
+					}
 				}
-			}
 		}
 	}
 
@@ -79,6 +93,59 @@ public class City {
 	 */
 	public void update() {
 		// Move humans, zombies, etc
+		person[][] people2 = new person[width][height];
+		for(int y=0; y<height; y++)
+		{
+			for(int x=0; x<width; x++)
+			{
+				if(people[x][y]!=null)
+				{
+					people[x][y].update();
+
+					if(y>0)
+					{
+						if(people[x][y].getDirection() == 0 && !walls[x][y - 1] && people[x][y-1]==null)
+						{
+							//people2[x][y-1] = new person(people[x][y].getDirection());
+							people[x][y-1] = new person(people[x][y].getDirection());
+							people[x][y] = null;
+							break;
+						}
+					}
+					if(y<height-1)
+					{
+						if(people[x][y].getDirection() == 2 && !walls[x][y + 1] && people[x][y+1]==null)
+						{
+							//people2[x][y+1] = new person(people[x][y].getDirection());
+							people[x][y+1] = new person(people[x][y].getDirection());
+							people[x][y] = null;
+							break;
+						}
+					}
+					if(x<width-1)
+					{
+						if(people[x][y].getDirection() == 1 && !walls[x+1][y] && people[x+1][y]==null)
+						{
+							//people2[x+1][y] = new person(people[x][y].getDirection());
+							people[x+1][y] = new person(people[x][y].getDirection());
+							people[x][y] = null;
+							break;
+						}
+					}
+					if(x>0)
+					{
+						if(people[x][y].getDirection() == 3 && !walls[x-1][y] && people[x-1][y]==null)
+						{
+							//people2[x-1][y] = new person(people[x][y].getDirection());
+							people[x-1][y] = new person(people[x][y].getDirection());
+							people[x][y] = null;
+							break;
+						}
+					}
+				}
+			}
+		}
+		//people = people2;
 	}
 
 	/**
@@ -89,8 +156,22 @@ public class City {
 		ZombieSim.dp.clear(Color.black);
 
 		drawWalls();
+		drawPeople();
 	}
-
+private void drawPeople()
+{
+	ZombieSim.dp.setPenColor(Color.WHITE);
+	for(int r = 0; r < height; r++)
+	{
+		for(int c = 0; c < width; c++)
+		{
+			if(people[c][r]!=null)
+			{
+				ZombieSim.dp.drawDot(c, r);
+			}
+		}
+	}
+}
 	/**
 	 * Draw the buildings.
 	 * First set the color for drawing, then draw a dot at each space
