@@ -16,6 +16,11 @@ public class City {
 	private person people[][];
 	private int width, height;
 
+	public person[][] getP()
+    {
+        return people;
+    }
+    public boolean[][] getW() { return walls; }
 	/**
 	 * Create a new City and fill it with buildings and people.
 	 * @param w width of city
@@ -64,6 +69,16 @@ public class City {
 			ty = Helper.nextInt(height);
 		}
 		people[tx][ty] = new zombie(Helper.nextInt(4));
+
+		for(int x=0; x<numPeople/20; x++) {
+			tx = Helper.nextInt(width);
+			ty = Helper.nextInt(height);
+			while (walls[tx][ty] == true || people[tx][ty] != null) {
+				tx = Helper.nextInt(width);
+				ty = Helper.nextInt(height);
+			}
+			people[tx][ty] = new slayer();
+		}
 	}
 
 
@@ -158,6 +173,8 @@ public class City {
 //				}
 //			}
 //		}
+		slayer.kill(people, width, height);
+		zombie.infect(people, width, height);
 		person.checkWall(people,walls,width,height);
 		person.move(people,walls,width,height);
         for(int y=0; y<height; y++) {
@@ -166,7 +183,6 @@ public class City {
                     people[x][y].setMoved(false);
             }
         }
-        zombie.infect(people, width, height);
 	}
 
 	/**
@@ -193,6 +209,11 @@ private void drawPeople()
 				if(people[c][r].getInfected())
 				{
 					ZombieSim.dp.setPenColor(Color.GREEN);
+					ZombieSim.dp.drawDot(c, r);
+				}
+				if(people[c][r].hasWeapon())
+				{
+					ZombieSim.dp.setPenColor(Color.RED);
 					ZombieSim.dp.drawDot(c, r);
 				}
 			}
