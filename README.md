@@ -47,6 +47,10 @@ If the person has not seen a zombie from the call to sight( ) and the person has
 
 
 
+--------------------
+- This is the extra feature I added since I thought it would be cool to pin two teams against each other rather than just letting the zombies kill everyone.  
+-There is also an added feature where if all non-slayers are turned into a zombie, then the slayers will lose motivation to continue fighting and "lose", and if all zombies are eliminated before that, then the humans win.
+
 ## slayer.java
 - weapon boolean set to true.
 - same methods as person due to extension unless otherwise specified
@@ -57,7 +61,7 @@ Checks if there is an infected person (zombie) next to the slayer. If there is, 
 ### sight
 New sight method compared to the person class. Instead of running away from a zombie, if the slayer sees a zombie in its line of sight it will attempt to move towards it.
 
-
+---------------------
 
 ## zombie.java
 - infected = true
