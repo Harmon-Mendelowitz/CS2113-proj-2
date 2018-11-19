@@ -25,6 +25,7 @@ public class ZombieSim extends JFrame implements ActionListener, KeyListener, Mo
 
 	public City w;
 
+	//space keyEvent to reset the city
 	public void keyTyped(KeyEvent keyEvent) {
 	}
 	public void keyPressed(KeyEvent keyEvent)
@@ -45,6 +46,9 @@ public class ZombieSim extends JFrame implements ActionListener, KeyListener, Mo
 	}
 	public void mouseExited(MouseEvent e) {
 	}
+
+	//mouseEvents to create a new zombie at the given location when the left mouse button is pressed,
+    //or create a new slayer when the right mouse button is pressed
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton()==MouseEvent.BUTTON1){
 			System.out.println("clicked: " + e.getLocationOnScreen());
@@ -92,8 +96,7 @@ public class ZombieSim extends JFrame implements ActionListener, KeyListener, Mo
 
 		addKeyListener(this);
 		addMouseListener(this);
-//		setFocusable(true);
-//		setFocusTraversalKeysEnabled(false);
+
 		/* Initialize the DotPanel canvas:
 		 * You CANNOT draw to the panel BEFORE this code is called.
 		 * You CANNOT add new widgets to the frame AFTER this is called.
@@ -156,12 +159,6 @@ public class ZombieSim extends JFrame implements ActionListener, KeyListener, Mo
 
 
 	public void actionPerformed(ActionEvent actionEvent) {
-//		Color randColor = Color.getHSBColor((float)Helper.nextDouble(), (float)Helper.nextDouble(), (float)Helper.nextDouble());
-//		int x,y;
-//		x = Helper.nextInt(MAX_X);
-//		y = Helper.nextInt(MAX_Y);
-//		MovableDot dot = new MovableDot(x, y, randColor);
-//		activeDot = dot;
-//		System.out.println("New dot at dot coordinate: " + x + ", " + y);
+
 	}
 }

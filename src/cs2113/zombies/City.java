@@ -34,6 +34,7 @@ public class City {
 		walls = new boolean[w][h];
 		people = new person[w][h];
 
+		//creates buildings randomly and populates the city with 'numB' number of people
 		randomBuildings(numB);
 		populate(numP);
 	}
@@ -45,6 +46,7 @@ public class City {
 	 *
 	 * @param numPeople the number of people to generate
 	 */
+
 	private void populate(int numPeople)
 	{
 		int tx,ty;
@@ -61,6 +63,7 @@ public class City {
 			people[tx][ty] = new person(Helper.nextInt(4));
 		}
 
+		// Generates a new zombie at a random location in the city.
 		tx = Helper.nextInt(width);
 		ty = Helper.nextInt(height);
 		while (walls[tx][ty] == true || people[tx][ty]!=null)
@@ -70,6 +73,7 @@ public class City {
 		}
 		people[tx][ty] = new zombie(Helper.nextInt(4));
 
+		// Generates new slayers at random locations, with the number of slayers depending on the number of people
 		for(int x=0; x<numPeople/15; x++) {
 			tx = Helper.nextInt(width);
 			ty = Helper.nextInt(height);
@@ -116,67 +120,15 @@ public class City {
 	 * Updates the state of the city for a time step.
 	 */
 	public void update() {
-		// Move humans, zombies, etc
-//		for(int y=0; y<height; y++)
-//		{
-//			for(int x=0; x<width; x++)
-//			{
-//				if(people[x][y]!=null)
-//				{
-//					people[x][y].update();
-//
-//					if(y>0 && people[x][y]!=null)
-//					{
-//						if(people[x][y].getDirection() == 0 && !walls[x][y - 1] && people[x][y-1]==null && people[x][y].getMoved()!=true)
-//						{
-//							//people2[x][y-1] = new person(people[x][y].getDirection());
-//							//if(people[x][y].getInfected())
-//							//	people[x][y - 1] = new zombie(people[x][y].getDirection());
-//							//else
-//							//	people[x][y - 1] = new person(people[x][y].getDirection());
-//							people[x][y-1] = people[x][y];
-//							people[x][y-1].setMoved(true);
-//							people[x][y] = null;
-//							//break;
-//						}
-//					}
-//					if(y<height-1 && people[x][y]!=null)
-//					{
-//						if(people[x][y].getDirection() == 2 && !walls[x][y + 1] && people[x][y+1]==null && people[x][y].getMoved()!=true)
-//						{
-//							people[x][y+1] = people[x][y];
-//                            people[x][y+1].setMoved(true);
-//							people[x][y] = null;
-//							//break;
-//						}
-//					}
-//					if(x<width-1 && people[x][y]!=null)
-//					{
-//						if(people[x][y].getDirection() == 1 && !walls[x+1][y] && people[x+1][y]==null && people[x][y].getMoved()!=true)
-//						{
-//							people[x+1][y] = people[x][y];
-//                            people[x+1][y].setMoved(true);
-//							people[x][y] = null;
-//							//break;
-//						}
-//					}
-//					if(x>0 && people[x][y]!=null)
-//					{
-//						if(people[x][y].getDirection() == 3 && !walls[x-1][y] && people[x-1][y]==null && people[x][y].getMoved()!=true)
-//						{
-//							people[x-1][y] = people[x][y];
-//                            people[x-1][y].setMoved(true);
-//							people[x][y] = null;
-//							//break;
-//						}
-//					}
-//				}
-//			}
-//		}
+		//removes any zombies adjacent to a slayer
 		slayer.kill(people, width, height);
+		//turns a human next to a zombie into a zombie
 		zombie.infect(people, width, height);
+		//updates the direction of each person to not face a wall
 		person.checkWall(people,walls,width,height);
+		//moves each person or person subclass by one space
 		person.move(people,walls,width,height);
+		//after everyone has been moved, sets their moved variable to false
         for(int y=0; y<height; y++) {
             for (int x = 0; x < width; x++) {
                 if(people[x][y]!=null)
@@ -192,6 +144,7 @@ public class City {
 		/* Clear the screen */
 		ZombieSim.dp.clear(Color.black);
 
+		//redraw people and walls
 		drawWalls();
 		drawPeople();
 	}
@@ -202,15 +155,18 @@ private void drawPeople()
 	{
 		for(int c = 0; c < width; c++)
 		{
+			//if there is a person at people[c][r], then color that location white
 			if(people[c][r]!=null)
 			{
 				ZombieSim.dp.setPenColor(Color.WHITE);
 				ZombieSim.dp.drawDot(c, r);
+				//if they are infected, color them green
 				if(people[c][r].getInfected())
 				{
 					ZombieSim.dp.setPenColor(Color.GREEN);
 					ZombieSim.dp.drawDot(c, r);
 				}
+				//if they have a weapon, color them red
 				if(people[c][r].hasWeapon())
 				{
 					ZombieSim.dp.setPenColor(Color.RED);
@@ -231,6 +187,7 @@ private void drawPeople()
 		{
 			for(int c = 0; c < width; c++)
 			{
+				//if walls[c][r] is true, then there is a wall at that location, so the panel colors it gray
 				if(walls[c][r])
 				{
 					ZombieSim.dp.drawDot(c, r);

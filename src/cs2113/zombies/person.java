@@ -4,6 +4,7 @@ import cs2113.util.Helper;
 
 public class person
 {
+    //direction 0 is up, 1 is right, 2 is down, and 3 is left
     protected int direction=0;
     protected boolean moved = false;
     protected boolean infected = false;
@@ -17,6 +18,7 @@ public class person
     {
     }
 
+    //returns for get() methods and set() methods to change the moved variable
     public boolean hasWeapon(){return weapon;}
     public int getDirection()
     {
@@ -34,6 +36,8 @@ public class person
     {
         moved = a;
     }
+
+    //10% chance to change the value of direction
     public void update()
     {
         int ud = Helper.nextInt(10);
@@ -43,9 +47,9 @@ public class person
         }
     }
 
+    //if a zombie is within 10 spaces of the direction a person is facing, they turn around and attempt to move 2 spaces away
     public boolean sight(person[][] p, boolean[][] wall, int x, int y, int width, int height, int d)
     {
-        //int d = this.direction;
         boolean found = false;
         int i = 1;
         int dx=x;
@@ -55,7 +59,6 @@ public class person
                 dx=x;
                 dy=y-i;
                 if (p[dx][dy]!=null && p[dx][dy].getInfected()) {
-                    System.out.println("Run");
                     this.direction = 2;
                     for(int a=1;a<3;a++) {
                         int ay=y+a;
@@ -74,7 +77,6 @@ public class person
                 dx=x+i;
                 dy=y;
                 if (p[dx][dy]!=null && p[dx][dy].getInfected()) {
-                    System.out.println("Run");
                     this.direction = 3;
                     for(int a=1;a<3;a++) {
                         int ax=x-a;
@@ -93,7 +95,6 @@ public class person
                 dx=x;
                 dy=y+i;
                 if (p[dx][dy]!=null && p[dx][dy].getInfected()) {
-                    System.out.println("Run");
                     this.direction = 0;
                     for(int a=1;a<3;a++) {
                         int ay=y-a;
@@ -112,7 +113,6 @@ public class person
                 dx=x-i;
                 dy=y;
                 if (p[dx][dy]!=null && p[dx][dy].getInfected()) {
-                    System.out.println("Run");
                     this.direction = 1;
                     for(int a=1;a<3;a++) {
                         int ax=x+a;
@@ -132,6 +132,7 @@ public class person
         return found;
     }
 
+    //updates the direction of each person in people[][] until they are not facing a wall or another person
     public static void checkWall(person[][] people, boolean[][] walls, int width, int height)
     {
         for(int y=0; y<height; y++){
@@ -170,6 +171,7 @@ public class person
                             }
                         }
                     }
+                    //covers the limit cases of being on the edge of the screen by considering the outside of the city to be walls
                     if(y==0 && people[x][y].getDirection()==0)
                     {
                         people[x][y].update();
@@ -203,6 +205,7 @@ public class person
         }
     }
 
+    //moves each person in people[][] if they can move to the given location and haven't been moved yet
     public static void move(person[][] people, boolean[][] walls, int width, int height)
     {
         for(int y=0; y<height; y++)
@@ -211,21 +214,16 @@ public class person
             {
                 if(people[x][y]!=null)
                 {
-                    //people[x][y].update();
+                    //tests if the person hasn't been moved yet
                     if(!people[x][y].getMoved()) {
+                        //follows basic movement procedures only if they haven't spotted a zombie
                         if (!people[x][y].sight(people, walls, x, y, width, height, people[x][y].getDirection())) ;
                         {
                             if (y > 0 && people[x][y] != null) {
                                 if (people[x][y].getDirection() == 0 && !walls[x][y - 1] && people[x][y - 1] == null && people[x][y].getMoved() != true) {
-                                    //people2[x][y-1] = new person(people[x][y].getDirection());
-                                    //if(people[x][y].getInfected())
-                                    //	people[x][y - 1] = new zombie(people[x][y].getDirection());
-                                    //else
-                                    //	people[x][y - 1] = new person(people[x][y].getDirection());
                                     people[x][y - 1] = people[x][y];
                                     people[x][y - 1].setMoved(true);
                                     people[x][y] = null;
-                                    //break;
                                 }
                             }
                             if (y < height - 1 && people[x][y] != null) {
@@ -233,7 +231,6 @@ public class person
                                     people[x][y + 1] = people[x][y];
                                     people[x][y + 1].setMoved(true);
                                     people[x][y] = null;
-                                    //break;
                                 }
                             }
                             if (x < width - 1 && people[x][y] != null) {
@@ -241,7 +238,6 @@ public class person
                                     people[x + 1][y] = people[x][y];
                                     people[x + 1][y].setMoved(true);
                                     people[x][y] = null;
-                                    //break;
                                 }
                             }
                             if (x > 0 && people[x][y] != null) {
@@ -249,7 +245,6 @@ public class person
                                     people[x - 1][y] = people[x][y];
                                     people[x - 1][y].setMoved(true);
                                     people[x][y] = null;
-                                    //break;
                                 }
                             }
                         }

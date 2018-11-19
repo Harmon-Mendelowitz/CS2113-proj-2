@@ -9,6 +9,7 @@ public class zombie extends person
     {
         direction = d;
     }
+    //new update method with a 20% chance to turn compared to the person's 10%
     public void update()
     {
         int ud = Helper.nextInt(5);
@@ -22,9 +23,9 @@ public class zombie extends person
         return infected;
     }
 
+    //Same sight method as the slayer, but the zombie looks for non-infected people instead of infected
     public boolean sight(person[][] p, boolean[][] wall, int x, int y, int width, int height, int d)
     {
-        //int d = this.direction;
         boolean found = false;
         int i = 1;
         int dx=x;
@@ -34,7 +35,6 @@ public class zombie extends person
                 dx=x;
                 dy=y-i;
                 if (p[dx][dy]!=null && !p[dx][dy].getInfected()) {
-                    System.out.println("Found");
                     if(y-1>0) {
                         if (!wall[x][y - 1] && p[x][y - 1] == null) {
                             p[x][y - 1] = this;
@@ -49,7 +49,6 @@ public class zombie extends person
                 dx=x+i;
                 dy=y;
                 if (p[dx][dy]!=null && !p[dx][dy].getInfected()) {
-                    System.out.println("Found");
                     if(x+1<width-1) {
                         if (!wall[x + 1][y] && p[x + 1][y] == null) {
                             p[x + 1][y] = this;
@@ -64,7 +63,6 @@ public class zombie extends person
                 dx=x;
                 dy=y+i;
                 if (p[dx][dy]!=null && !p[dx][dy].getInfected()) {
-                    System.out.println("Found");
                     if(y+1<height-1) {
                         if (!wall[x][y + 1] && p[x][y + 1] == null) {
                             p[x][y + 1] = this;
@@ -79,7 +77,6 @@ public class zombie extends person
                 dx=x-i;
                 dy=y;
                 if (p[dx][dy]!=null && !p[dx][dy].getInfected()) {
-                    System.out.println("Found");
                     if(x-1>0) {
                         if (!wall[x - 1][y] && p[x - 1][y] == null) {
                             p[x - 1][y] = this;
@@ -95,6 +92,8 @@ public class zombie extends person
         return found;
     }
 
+    //if a zombie is next to a person, they are infected and turned into a zombie by creating a new zombie at the person's location
+    // with the same direction value as the person there previously
     public static void infect(person[][] p, int width, int height)
     {
         for(int y=0; y<height; y++) {

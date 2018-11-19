@@ -3,12 +3,13 @@ import cs2113.util.Helper;
 
 public class slayer extends person
 {
-    boolean weapon = true;
+    private boolean weapon = true;
 
     public slayer(){}
 
     public boolean hasWeapon(){return weapon;}
 
+    //if the slayer is next to a zombie, the zombie is killed (set to null)
     public static void kill(person[][] p, int width, int height) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -34,6 +35,7 @@ public class slayer extends person
         }
     }
 
+    //follows the same sight algorithm as person, but the slayer will attempt to move toward the zombie once instead of away
     public boolean sight(person[][] p, boolean[][] wall, int x, int y, int width, int height, int d)
     {
         boolean found = false;
@@ -45,7 +47,6 @@ public class slayer extends person
                 dx=x;
                 dy=y-i;
                 if (p[dx][dy]!=null && p[dx][dy].getInfected()) {
-                    System.out.println("Found Zombie");
                     if(y-1>0) {
                         if (!wall[x][y - 1] && p[x][y - 1] == null) {
                             p[x][y - 1] = this;
@@ -60,7 +61,6 @@ public class slayer extends person
                 dx=x+i;
                 dy=y;
                 if (p[dx][dy]!=null && p[dx][dy].getInfected()) {
-                    System.out.println("Found Zombie");
                     if(x+1<width-1) {
                         if (!wall[x + 1][y] && p[x + 1][y] == null) {
                             p[x + 1][y] = this;
@@ -75,7 +75,6 @@ public class slayer extends person
                 dx=x;
                 dy=y+i;
                 if (p[dx][dy]!=null && p[dx][dy].getInfected()) {
-                    System.out.println("Found Zombie");
                     if(y+1<height-1) {
                         if (!wall[x][y + 1] && p[x][y + 1] == null) {
                             p[x][y + 1] = this;
@@ -90,7 +89,6 @@ public class slayer extends person
                 dx=x-i;
                 dy=y;
                 if (p[dx][dy]!=null && p[dx][dy].getInfected()) {
-                    System.out.println("Found Zombie");
                     if(x-1>0) {
                         if (!wall[x - 1][y] && p[x - 1][y] == null) {
                             p[x - 1][y] = this;
