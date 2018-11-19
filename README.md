@@ -23,4 +23,4 @@ The drawWall method sets the color to gray and whenever the walls[ ][ ] boolean 
 Sets the color to white and iterates through the people[ ][ ] array of person objects. If one of the indexes is true, that location on the panel is colored. If the person at that index is infected, then they are colored green instead since they are a zombie. If the person has a weapon, then they are colored red to signify a slayer.
 
 ### update
-The update method 
+The update method checks a few things. First, it calls the kill( ) method in slayer to check if there is a zombie next to a slayer. Next, it calls the infect( ) method in zombie to check if there is a person next to a zombie to infect. It then calls the checkWall( ) and move( ) methods in person to check if each person or person subclass can move to a given location or if they need to turn first, then it will move them if there is nothing in the way. After all these a called, it will then iterate through every person in people[ ][ ] and change their boolean setMoved value to false so that the program knows they can be moved once more.
