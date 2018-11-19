@@ -27,5 +27,45 @@ Sets the color to white and iterates through the people[ ][ ] array of person ob
 The update method checks a few things. First, it calls the kill( ) method in slayer to check if there is a zombie next to a slayer. Next, it calls the infect( ) method in zombie to check if there is a person next to a zombie to infect. It then calls the checkWall( ) and move( ) methods in person to check if each person or person subclass can move to a given location or if they need to turn first, then it will move them if there is nothing in the way. After all these a called, it will then iterate through every person in people[ ][ ] and change their boolean setMoved value to false so that the program knows they can be moved once more.
 
 
+
 ## person.java
-- c
+- Contains an integer for direction, signifying the direction the person is facing with 0 being up, 1 being right, 2 down, and 3 left.
+- Contains boolean values for moved, infected, and weapon.
+- Each value has a get( ) method and Person has a setMoved( ) method which is used to determine whether a person has been moved or not within each update call.
+
+### update  
+Has a 10% chance of changing the direction value of the person to a random integer between 0 and 3 inclusive.  
+
+### sight  
+Checks if there is a zombie within 10 spaces of the direction the person is facing. If there is, then the person will attempt to turn around and move 2 spaces if there is nothing in the way.
+
+### checkWall  
+If the person is facing a wall, then they will turn until they are no longer directly in front of a wall.
+
+### move
+If the person has not seen a zombie from the call to sight( ) and the person has not yet been moved, then the person will engage in normal movement behavior by moving forward if there is no wall or person in the way. This is done by setting the target location's people[ ][ ] coordinates to the person being moved and setting the person's old location to null. The new person's Moved variable is then set to true so that the function will not move this person again until everyone has been moved and the next cycle of checks has begun.
+
+
+
+## slayer.java
+- weapon boolean set to true.
+- same methods as person due to extension unless otherwise specified
+
+### kill
+Checks if there is an infected person (zombie) next to the slayer. If there is, then that zombie is killed and the people[ ][ ] array at that location is set to null.
+
+### sight
+New sight method compared to the person class. Instead of running away from a zombie, if the slayer sees a zombie in its line of sight it will attempt to move towards it.
+
+
+
+## zombie.java
+- infected = true
+- extends the person class
+- same update method as person, but there is a 20% chance the zombie will turn compared to the human's 10%
+
+### sight
+Same sight method as the slayer, except the zombie will attempt to move towards any person not infected (includes slayers).
+
+### infect
+Same as the slayer's kill( ), but instead of killing the person, if the zombie moves within a space of the target then they are turned into a zombie. This is done by setting the given people[ ][ ] location to a new zombie with the same direction variable as the person which was previously there.
