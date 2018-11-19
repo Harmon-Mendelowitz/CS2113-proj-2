@@ -73,3 +73,9 @@ Same sight method as the slayer, except the zombie will attempt to move towards 
 
 ### infect
 Same as the slayer's kill( ), but instead of killing the person, if the zombie moves within a space of the target then they are turned into a zombie. This is done by setting the given people[ ][ ] location to a new zombie with the same direction variable as the person which was previously there.
+
+
+## ZombieSim.java
+- Creates a dotPanel with the given specifications, creates a City, and updates the panel to show movement and interactions between objects.  
+- Contains the key ActionListener which resets the simulation with a new city if the space key is pressed.
+- Contains two mouseEvents which create a new zombie at the location of the mouse when the left mouse button is pressed or creates a new slayer at that location if the right mouse button is pressed.
