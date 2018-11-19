@@ -1,5 +1,6 @@
 # proj-2-HarmonMendelowitz
 
+
 ## City.java
 - Contains two 2-D boolean arrays of walls and people, and the integer for width and height.
 - Can access these arrays with the getP( ) and getW( ) functions to return the array of people and walls respectively.
@@ -24,3 +25,7 @@ Sets the color to white and iterates through the people[ ][ ] array of person ob
 
 ### update
 The update method checks a few things. First, it calls the kill( ) method in slayer to check if there is a zombie next to a slayer. Next, it calls the infect( ) method in zombie to check if there is a person next to a zombie to infect. It then calls the checkWall( ) and move( ) methods in person to check if each person or person subclass can move to a given location or if they need to turn first, then it will move them if there is nothing in the way. After all these a called, it will then iterate through every person in people[ ][ ] and change their boolean setMoved value to false so that the program knows they can be moved once more.
+
+
+## person.java
+- c
