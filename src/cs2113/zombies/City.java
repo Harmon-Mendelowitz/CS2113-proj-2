@@ -70,7 +70,7 @@ public class City {
 		}
 		people[tx][ty] = new zombie(Helper.nextInt(4));
 
-		for(int x=0; x<numPeople/20; x++) {
+		for(int x=0; x<numPeople/15; x++) {
 			tx = Helper.nextInt(width);
 			ty = Helper.nextInt(height);
 			while (walls[tx][ty] == true || people[tx][ty] != null) {
