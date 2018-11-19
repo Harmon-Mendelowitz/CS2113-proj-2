@@ -15,7 +15,7 @@ The Populate method creates a person at a random location within the constraints
 - These are the methods which are called only once and set up the city for the simulation. The following methods are called in ZombieSim.java to update the graphic.  
 
 ### draw  
-The draw method sets the dotPanel color to black and calls the drawWall( ) and drawPeople( ) methods.  
+The draw method sets the dotPanel completely to black, clearing it, and then calls the drawWall( ) and drawPeople( ) methods to update it with the new locations of each object.  
 
 ### drawWall  
 The drawWall method sets the color to gray and whenever the walls[ ][ ] boolean array contains a true, that corresponding location on the panel is colored to signify part of a building.
